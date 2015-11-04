@@ -1,0 +1,244 @@
+<div ng-cloak class="main">
+  <div layout="row">
+    <div flex="100" class="chart-buttons">
+
+      <md-button aria-label="Select" ng-class="{'md-raised':ctrl.svgArtistDemo.selectItemActive}" ng-click="ctrl.svgArtistDemo.makeSelection()">
+        <md-icon md-svg-icon="images/icons/arrow-up-left.svg"></md-icon>
+      </md-button>
+
+      <md-button aria-label="Pen">
+        <md-icon md-svg-icon="images/icons/pen.svg"></md-icon>
+      </md-button>
+
+      <md-button aria-label="Add Line" ng-class="{'md-raised':ctrl.svgArtistDemo.createLineActive}" ng-click="ctrl.svgArtistDemo.activateCreateLine()">
+        <ng-md-icon icon="create" style="fill: black" size="18"></ng-md-icon>
+      </md-button>
+
+      <md-button aria-label="Add Text">
+        <ng-md-icon icon="text_format" style="fill: black" size="18"></ng-md-icon>
+      </md-button>
+
+      <md-menu md-offset="0 -7">
+        <md-button ng-disabled="!ctrl.svgArtistDemo.Layers.length" aria-label="Open demo menu" ng-click="$mdOpenMenu($event)">
+          <ng-md-icon md-menu-origin icon="layers" style="fill: black" size="18"></ng-md-icon>{{ctrl.svgArtistDemo.Layers.length}}
+        </md-button>
+        <md-menu-content width="4">
+          <md-menu-item ng-repeat="item in ctrl.svgArtistDemo.Layers">
+            <md-button aria-label="Select Layer" ng-click="ctrl.svgArtistDemo.selectLayer(item)"> <div layout="row">
+              <p flex>{{item.name}}</p>
+            </div></md-button>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
+
+      <md-button aria-label="New Layer" ng-click="ctrl.svgArtistDemo.createNewLayer()">
+        <ng-md-icon icon="content_copy" style="fill: black" size="18"></ng-md-icon>
+      </md-button>
+
+      <md-button aria-label="Clear" ng-click="ctrl.svgArtistDemo.removeAllLayers()">
+        <ng-md-icon icon="layers_clear" style="fill: black" size="18"></ng-md-icon>
+      </md-button>
+
+      <!--<md-button aria-label="Rotate">-->
+      <!--<ng-md-icon icon="refresh" style="fill: black" size="18"></ng-md-icon>-->
+      <!--</md-button>-->
+
+      <!--<md-button aria-label="Undo" ng-click="ctrl.svgArtistDemo.undoAction()">-->
+      <!--<ng-md-icon icon="undo" style="fill: black" size="18"></ng-md-icon>-->
+      <!--</md-button>-->
+
+      <md-button aria-label="Save" ng-click="ctrl.svgArtistDemo.saveImageToDesktop()">
+        <ng-md-icon icon="save" style="fill: black" size="18"></ng-md-icon>
+      </md-button>
+
+      <md-input-container>
+        <input aria-label="Selected Layer" ng-if="ctrl.svgArtistDemo.selectedLayer" ng-model="ctrl.svgArtistDemo.selectedLayer.name">
+      </md-input-container>
+
+      <md-button aria-label="Hide/Show Layer" ng-if="ctrl.svgArtistDemo.selectedLayer">
+        <md-icon md-svg-icon="images/icons/eye.svg"></md-icon>
+      </md-button>
+
+      <md-button aria-label="Remove Layer" ng-if="ctrl.svgArtistDemo.selectedLayer" ng-click="ctrl.svgArtistDemo.removeLayer()">
+        <ng-md-icon icon="delete" style="fill: black" size="18"></ng-md-icon>
+      </md-button>
+    </div>
+  </div>
+  <md-toolbar class="md-menu-toolbar">
+    <div layout="row">
+      <div>
+        <h2 class="md-toolbar-tools">svgArtist</h2>
+        <md-menu-bar>
+          <md-menu>
+            <button ng-click="$mdOpenMenu()">
+              File
+            </button>
+            <md-menu-content>
+              <md-menu-item>
+                <md-button ng-click="ctrl.sampleAction('share', $event)">
+                  Share...
+                </md-button>
+              </md-menu-item>
+              <md-menu-divider></md-menu-divider>
+              <md-menu-item>
+                <md-menu>
+                  <md-button ng-click="$mdOpenMenu()">New</md-button>
+                  <md-menu-content>
+                    <md-menu-item><md-button ng-click="ctrl.sampleAction('New Document', $event)">Document</md-button></md-menu-item>
+                    <md-menu-item><md-button ng-click="ctrl.sampleAction('New Spreadsheet', $event)">Spreadsheet</md-button></md-menu-item>
+                    <md-menu-item><md-button ng-click="ctrl.sampleAction('New Presentation', $event)">Presentation</md-button></md-menu-item>
+                    <md-menu-item><md-button ng-click="ctrl.sampleAction('New Form', $event)">Form</md-button></md-menu-item>
+                    <md-menu-item><md-button ng-click="ctrl.sampleAction('New Drawing', $event)">Drawing</md-button></md-menu-item>
+                  </md-menu-content>
+                </md-menu>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="ctrl.sampleAction('Open', $event)">
+                  Open...
+                  <span class="md-alt-text"> {{ 'M-O' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button disabled="disabled" ng-click="ctrl.sampleAction('Rename', $event)">
+                  Rename
+                </md-button>
+              </md-menu-item>
+              <md-menu-divider></md-menu-divider>
+              <md-menu-item>
+                <md-button ng-click="ctrl.sampleAction('Print', $event)">
+                  Print
+                  <span class="md-alt-text">{{ 'M-P' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>
+          <md-menu>
+            <button ng-click="$mdOpenMenu()">
+              Edit
+            </button>
+            <md-menu-content>
+              <md-menu-item class="md-indent">
+                <md-icon md-svg-icon="undo"></md-icon>
+                <md-button ng-click="ctrl.sampleAction('undo', $event)">
+                  Undo
+                  <span class="md-alt-text">{{ 'M-Z' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item class="md-indent">
+                <md-icon md-svg-icon="redo"></md-icon>
+                <md-button ng-click="ctrl.sampleAction('redo', $event)">
+                  Redo
+                  <span class="md-alt-text">{{ 'M-Y' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-divider></md-menu-divider>
+              <md-menu-item class="md-indent">
+                <md-icon md-svg-icon="content-cut"></md-icon>
+                <md-button ng-click="ctrl.sampleAction('cut', $event)">
+                  Cut
+                  <span class="md-alt-text">{{ 'M-X' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item class="md-indent">
+                <md-icon md-svg-icon="content-copy"></md-icon>
+                <md-button ng-click="ctrl.sampleAction('copy', $event)">
+                  Copy
+                  <span class="md-alt-text">{{ 'M-C' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item class="md-indent">
+                <md-icon md-svg-icon="content-paste"></md-icon>
+                <md-button ng-click="ctrl.sampleAction('paste', $event)">
+                  Paste
+                  <span class="md-alt-text">{{ 'M-P' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-divider></md-menu-divider>
+              <md-menu-item class="md-indent">
+                <md-button ng-click="ctrl.sampleAction('Find and replace', $event)">
+                  Find and replace...
+                  <span class="md-alt-text">{{ 'M-S-H' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>
+          <md-menu>
+            <button ng-click="$mdOpenMenu()">
+              View
+            </button>
+            <md-menu-content>
+              <md-menu-item type="checkbox" ng-model="ctrl.settings.printLayout">Print layout</md-menu-item>
+              <md-menu-item class="md-indent">
+                <md-menu>
+                  <md-button ng-click="$mdOpenMenu()">Mode</md-button>
+                  <md-menu-content width="3">
+                    <md-menu-item type="radio" ng-model="ctrl.settings.presentationMode" value="'presentation'">Presentation</md-menu-item>
+                    <md-menu-item type="radio" ng-model="ctrl.settings.presentationMode" value="'edit'">Edit</md-menu-item>
+                    <md-menu-item type="radio" ng-model="ctrl.settings.presentationMode" value="'modifiable'">Modifiable</md-menu-item>
+                  </md-menu-content>
+                </md-menu>
+              </md-menu-item>
+              <md-menu-divider></md-menu-divider>
+              <md-menu-item type="checkbox" ng-model="ctrl.settings.showRuler">Show ruler</md-menu-item>
+              <md-menu-item type="checkbox" ng-model="ctrl.settings.showEquationToolbar">Show equation toolbar</md-menu-item>
+              <md-menu-item type="checkbox" ng-model="ctrl.settings.showSpellingSuggestions">Show spelling suggestions</md-menu-item>
+              <md-menu-divider></md-menu-divider>
+              <md-menu-item type="checkbox" ng-model="ctrl.settings.compactControls">Compact controls</md-menu-item>
+              <md-menu-item type="checkbox" ng-model="ctrl.settings.fullScreen">Full screen</md-menu-item>
+            </md-menu-content>
+          </md-menu>
+          <md-menu>
+            <button ng-click="$mdOpenMenu()">
+              Format
+            </button>
+            <md-menu-content>
+              <md-menu-item>
+                <md-button ng-click="ctrl.sampleAction('bold', $event)">
+                  Bold
+                  <span class="md-alt-text"> {{ 'M-B' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="ctrl.sampleAction('italic', $event)">
+                  Italic
+                  <span class="md-alt-text">{{ 'M-I' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="ctrl.sampleAction('underline', $event)">
+                  Underline
+                  <span class="md-alt-text">{{ 'M-U' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="ctrl.sampleAction('strikethrough', $event)">
+                  Strikethrough
+                  <span class="md-alt-text">{{ 'A-S-5' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="ctrl.sampleAction('superscript', $event)">
+                  Superscript
+                  <span class="md-alt-text">{{ 'M-.' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-item>
+                <md-button ng-click="ctrl.sampleAction('subscript', $event)">
+                  Subscript
+                  <span class="md-alt-text">{{ 'M-,' | keyboardShortcut }}</span>
+                </md-button>
+              </md-menu-item>
+              <md-menu-divider></md-menu-divider>
+              <md-menu-item><md-button ng-click="ctrl.toggleSetting('clearFormatting')">Clear Formatting</md-button></md-menu-item>
+            </md-menu-content>
+          </md-menu>
+        </md-menu-bar>
+      </div>
+    </div>
+  </md-toolbar>
+  <div class="svg-container" ng-class="{'use-cross-hairs': ctrl.svgArtistDemo.createLineActive, 'use-grab': ctrl.svgArtistDemo.selectItemActive}">
+    <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+         class="svg-artist-demo"
+         style="width:100%;height:100%;position:fixed;top:0;left:0;bottom:0;right:0;" ></svg>
+  </div>
+</div>

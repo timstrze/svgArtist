@@ -1,0 +1,23 @@
+{
+  "name": "svg-artist",
+  "version": "0.1.0",
+  "dependencies": {
+    "angular": "latest",
+    "angular-animate": "latest",
+    "angular-cookies": "latest",
+    "angular-resource": "latest",
+    "angular-route": "latest",
+    "angular-sanitize": "latest",
+    "angular-touch": "latest",
+    "angular-material": "latest",
+    "ng-messages": "latest",
+    "d3": "~3.5.6",
+    "angular-local-storage": "latest",
+    "angular-material-icons": "latest"
+  },
+  "devDependencies": {
+    "angular-mocks": "latest"
+  },
+  "appPath": "app",
+  "moduleName": "svgArtistApp"
+}

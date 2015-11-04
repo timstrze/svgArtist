@@ -1,0 +1,16 @@
+
+.main .use-grab {
+  cursor: grab;
+}
+
+.main .use-pointer {
+  cursor: pointer;
+}
+
+.main .use-cross-hairs {
+  cursor: crosshair;
+}
+
+.main .svg-container {
+  border: 1px solid black;
+}
