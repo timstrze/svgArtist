@@ -22,11 +22,14 @@ angular
   ])
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/svg-artist-demo', {
+      .when('/', {
         templateUrl: 'views/routes/main.html',
         controller: 'MainController',
         controllerAs: 'ctrl'
       })
+      .otherwise({
+        redirectTo: '/'
+      });
   });
 
 
