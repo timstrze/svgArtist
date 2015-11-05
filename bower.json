@@ -2,7 +2,7 @@
   "name": "svgArtist",
   "version": "0.1.0",
   "main": [
-    "scripts/services/svg-artist.js"
+    "app/scripts/services/svg-artist.js"
   ],
   "ignore": [
     "node_modules",
