@@ -4,7 +4,7 @@
   "main": [
     "app/scripts/app.js",
     "app/scripts/directive/layer-menu.js",
-    "app/scripts/services/svg-artist.js",
+    "app/scripts/services/svg-artist.js"
   ],
   "ignore": [
     "node_modules",
