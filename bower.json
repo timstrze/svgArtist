@@ -2,7 +2,9 @@
   "name": "svgArtist",
   "version": "0.1.0",
   "main": [
-    "dist/scripts/*.js"
+    "app/scripts/app.js",
+    "app/scripts/directive/layer-menu.js",
+    "app/scripts/services/svg-artist.js",
   ],
   "ignore": [
     "node_modules",
