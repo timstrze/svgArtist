@@ -18,10 +18,9 @@ angular
     'ngTouch',
     'ngMaterial',
     'ngMessages',
-    'LocalStorageModule',
     'ngMdIcons'
   ])
-  .config(function ($routeProvider, $httpProvider) {
+  .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/routes/main.html',
@@ -31,10 +30,6 @@ angular
       .otherwise({
         redirectTo: '/'
       });
-
-    // Loading Interceptor
-    //$httpProvider.interceptors.push('LoadingInterceptor');
-
   });
 
 
