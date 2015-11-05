@@ -1,6 +1,13 @@
 {
   "name": "svg-artist",
   "version": "0.1.0",
+  "main": [
+    "scripts/app.js"
+  ],
+  "ignore": [
+    "node_modules",
+    "test"
+  ],
   "dependencies": {
     "angular": "latest",
     "angular-animate": "latest",
