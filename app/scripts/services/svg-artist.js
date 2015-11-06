@@ -86,6 +86,7 @@ angular.module('svgArtistApp')
 
       this.Layers.unshift({
         name: 'Layer ' + this.Layers.length,
+        specialItems: [],
         layer: this.svgArtist.append('g').attr('name', 'Layer ' + this.Layers.length).attr('class', 'layer'),
         items: []
       });
@@ -115,6 +116,7 @@ angular.module('svgArtistApp')
         if(this.Layers.length === 0) {
           this.Layers.push({
             name: 'Layer 0',
+            specialItems: [],
             layer: this.svgArtist.append('g').attr('name', 'Layer 0').attr('class', 'layer'),
             items: []
           });
@@ -200,9 +202,105 @@ angular.module('svgArtistApp')
      * @description
      * Make service method available to the ng-repeat.
      */
-    SvgArtist.prototype.selectLayer = function(item) {
+    SvgArtist.prototype.selectLayer = function(layer) {
+      this.selectedLayer = layer;
+    };
 
-      this.selectedLayer = item;
+
+    /**
+     * @ngdoc property
+     * @name undoAction
+     * @propertyOf stockTrackAngularJsApp.service:SvgArtist
+     *
+     * @description
+     * Make service method available to the ng-repeat.
+     */
+    SvgArtist.prototype.selectItemsInLayer = function(selectedLayer) {
+
+      this.selectedLayer = selectedLayer;
+
+      angular.forEach(selectedLayer.items, function(item) {
+
+        var bbox = item.node().getBBox();
+
+        var rect = selectedLayer.layer.append("svg:rect")
+          .attr("x", bbox.x)
+          .attr("y", bbox.y)
+          .attr("width", bbox.width)
+          .attr("height", bbox.height)
+          .attr("name", "bounding-box")
+          .attr("class", "bounding-box")
+          .style("fill", "#ccc")
+          .style("fill-opacity", ".3")
+          .style("stroke", "#666")
+          .style("stroke-width", "1.5px");
+
+        selectedLayer.specialItems.unshift(rect);
+
+      });
+
+    };
+
+
+    /**
+     * @ngdoc property
+     * @name undoAction
+     * @propertyOf stockTrackAngularJsApp.service:SvgArtist
+     *
+     * @description
+     * Make service method available to the ng-repeat.
+     */
+    SvgArtist.prototype.deSelectItemsInLayer = function(layer) {
+
+      this.selectedLayer = layer;
+
+      //angular.forEach(layer.specialItems, function(specialItem) {
+      //
+      //  layer.specialItems.unshift(rect);
+      //
+      //});
+
+    };
+
+
+    /**
+     * @ngdoc property
+     * @name undoAction
+     * @propertyOf stockTrackAngularJsApp.service:SvgArtist
+     *
+     * @description
+     * Make service method available to the ng-repeat.
+     */
+    SvgArtist.prototype.addText = function() {
+
+      var _this = this;
+
+      var svg = this.svgContainer;
+
+      svg
+        .on("mousedown", function () {
+
+          var m = d3.mouse(svg.node());
+
+          d3.select('body').on("keyup", function(d) {
+            console.log("keypress", d3.event.keyCode, m, String.fromCharCode(d3.event.keyCode)); // also tried "keyup", "keydown", "key"
+
+            //var popupText = _this.selectedLayer
+
+            //_this.selectedLayer.specialItems.unshift();
+
+            if(d3.event.keyCode === 13 || d3.event.keyCode === 27) {
+              d3.select('body').on("keyup", null);
+            }
+          });
+        })
+        .on("mouseup", function () {
+          svg.on('mousedown', null);
+          svg.on('mouseup', null);
+          //d3.select('body').on("keyup", null);
+        });
+
+
     };
 
 

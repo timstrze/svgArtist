@@ -29,7 +29,14 @@ angular.module('svgArtistApp')
       }).join(seperator);
     };
   })
-  .controller('MainController', function($mdDialog, SvgArtist) {
+  .controller('MainController', function($mdDialog, $mdSidenav, $log, SvgArtist) {
+
+    this.close = function (type) {
+      $mdSidenav(type).close()
+        .then(function () {
+          $log.debug("close RIGHT is done");
+        });
+    };
 
     this.svgArtistDemo = new SvgArtist({target: '.svg-artist-demo'});
 

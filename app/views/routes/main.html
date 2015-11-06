@@ -1,69 +1,6 @@
 <div ng-cloak class="main">
-  <div layout="row">
-    <div flex="100" class="chart-buttons">
 
-      <md-button aria-label="Select" ng-class="{'md-raised':ctrl.svgArtistDemo.selectItemActive}" ng-click="ctrl.svgArtistDemo.makeSelection()">
-        <md-icon md-svg-icon="images/icons/arrow-up-left.svg"></md-icon>
-      </md-button>
 
-      <md-button aria-label="Pen">
-        <md-icon md-svg-icon="images/icons/pen.svg"></md-icon>
-      </md-button>
-
-      <md-button aria-label="Add Line" ng-class="{'md-raised':ctrl.svgArtistDemo.createLineActive}" ng-click="ctrl.svgArtistDemo.activateCreateLine()">
-        <ng-md-icon icon="create" style="fill: black" size="18"></ng-md-icon>
-      </md-button>
-
-      <md-button aria-label="Add Text">
-        <ng-md-icon icon="text_format" style="fill: black" size="18"></ng-md-icon>
-      </md-button>
-
-      <md-menu md-offset="0 -7">
-        <md-button ng-disabled="!ctrl.svgArtistDemo.Layers.length" aria-label="Open demo menu" ng-click="$mdOpenMenu($event)">
-          <ng-md-icon md-menu-origin icon="layers" style="fill: black" size="18"></ng-md-icon>{{ctrl.svgArtistDemo.Layers.length}}
-        </md-button>
-        <md-menu-content width="4">
-          <md-menu-item ng-repeat="item in ctrl.svgArtistDemo.Layers">
-            <md-button aria-label="Select Layer" ng-click="ctrl.svgArtistDemo.selectLayer(item)"> <div layout="row">
-              <p flex>{{item.name}}</p>
-            </div></md-button>
-          </md-menu-item>
-        </md-menu-content>
-      </md-menu>
-
-      <md-button aria-label="New Layer" ng-click="ctrl.svgArtistDemo.createNewLayer()">
-        <ng-md-icon icon="content_copy" style="fill: black" size="18"></ng-md-icon>
-      </md-button>
-
-      <md-button aria-label="Clear" ng-click="ctrl.svgArtistDemo.removeAllLayers()">
-        <ng-md-icon icon="layers_clear" style="fill: black" size="18"></ng-md-icon>
-      </md-button>
-
-      <!--<md-button aria-label="Rotate">-->
-      <!--<ng-md-icon icon="refresh" style="fill: black" size="18"></ng-md-icon>-->
-      <!--</md-button>-->
-
-      <!--<md-button aria-label="Undo" ng-click="ctrl.svgArtistDemo.undoAction()">-->
-      <!--<ng-md-icon icon="undo" style="fill: black" size="18"></ng-md-icon>-->
-      <!--</md-button>-->
-
-      <md-button aria-label="Save" ng-click="ctrl.svgArtistDemo.saveImageToDesktop()">
-        <ng-md-icon icon="save" style="fill: black" size="18"></ng-md-icon>
-      </md-button>
-
-      <md-input-container>
-        <input aria-label="Selected Layer" ng-if="ctrl.svgArtistDemo.selectedLayer" ng-model="ctrl.svgArtistDemo.selectedLayer.name">
-      </md-input-container>
-
-      <md-button aria-label="Hide/Show Layer" ng-if="ctrl.svgArtistDemo.selectedLayer">
-        <md-icon md-svg-icon="images/icons/eye.svg"></md-icon>
-      </md-button>
-
-      <md-button aria-label="Remove Layer" ng-if="ctrl.svgArtistDemo.selectedLayer" ng-click="ctrl.svgArtistDemo.removeLayer()">
-        <ng-md-icon icon="delete" style="fill: black" size="18"></ng-md-icon>
-      </md-button>
-    </div>
-  </div>
   <md-toolbar class="md-menu-toolbar">
     <div layout="row">
       <div>
@@ -236,9 +173,103 @@
       </div>
     </div>
   </md-toolbar>
-  <div class="svg-container" ng-class="{'use-cross-hairs': ctrl.svgArtistDemo.createLineActive, 'use-grab': ctrl.svgArtistDemo.selectItemActive}">
-    <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
-         class="svg-artist-demo"
-         style="width:80%;height:400px;border: 1px solid black;"></svg>
+
+  <div layout="column" ng-cloak>
+    <section layout="row" flex>
+      <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
+        <md-toolbar class="md-theme-indigo">
+          <h1 class="md-toolbar-tools">Sidenav Left</h1>
+        </md-toolbar>
+        <md-content layout-padding>
+          <md-button aria-label="Select" ng-class="{'md-raised':ctrl.svgArtistDemo.selectItemActive}" ng-click="ctrl.svgArtistDemo.makeSelection()">
+            <md-icon md-svg-icon="images/icons/arrow-up-left.svg"></md-icon>
+          </md-button>
+
+          <md-button aria-label="Pen">
+            <md-icon md-svg-icon="images/icons/pen.svg"></md-icon>
+          </md-button>
+
+          <md-button aria-label="Add Line" ng-class="{'md-raised':ctrl.svgArtistDemo.createLineActive}" ng-click="ctrl.svgArtistDemo.activateCreateLine()">
+            <ng-md-icon icon="create" style="fill: black" size="18"></ng-md-icon>
+          </md-button>
+
+          <md-button aria-label="Add Text" ng-click="ctrl.svgArtistDemo.addText()">
+            <ng-md-icon icon="text_format" style="fill: black" size="18"></ng-md-icon>
+          </md-button>
+
+          <md-menu md-offset="0 -7">
+            <md-button ng-disabled="!ctrl.svgArtistDemo.Layers.length" aria-label="Open demo menu" ng-click="$mdOpenMenu($event)">
+              <ng-md-icon md-menu-origin icon="layers" style="fill: black" size="18"></ng-md-icon>{{ctrl.svgArtistDemo.Layers.length}}
+            </md-button>
+            <md-menu-content width="4">
+              <md-menu-item ng-repeat="item in ctrl.svgArtistDemo.Layers">
+                <md-button aria-label="Select Layer" ng-click="ctrl.svgArtistDemo.selectItemsInLayer(item)"> <div layout="row">
+                  <p flex>{{item.name}}</p>
+                </div></md-button>
+              </md-menu-item>
+            </md-menu-content>
+          </md-menu>
+
+          <md-button aria-label="New Layer" ng-click="ctrl.svgArtistDemo.createNewLayer()">
+            <ng-md-icon icon="content_copy" style="fill: black" size="18"></ng-md-icon>
+          </md-button>
+
+          <md-button aria-label="Clear" ng-click="ctrl.svgArtistDemo.removeAllLayers()">
+            <ng-md-icon icon="layers_clear" style="fill: black" size="18"></ng-md-icon>
+          </md-button>
+
+          <!--<md-button aria-label="Rotate">-->
+          <!--<ng-md-icon icon="refresh" style="fill: black" size="18"></ng-md-icon>-->
+          <!--</md-button>-->
+
+          <!--<md-button aria-label="Undo" ng-click="ctrl.svgArtistDemo.undoAction()">-->
+          <!--<ng-md-icon icon="undo" style="fill: black" size="18"></ng-md-icon>-->
+          <!--</md-button>-->
+
+          <md-button aria-label="Save" ng-click="ctrl.svgArtistDemo.saveImageToDesktop()">
+            <ng-md-icon icon="save" style="fill: black" size="18"></ng-md-icon>
+          </md-button>
+
+          <md-input-container>
+            <input aria-label="Selected Layer" ng-if="ctrl.svgArtistDemo.selectedLayer" ng-model="ctrl.svgArtistDemo.selectedLayer.name">
+          </md-input-container>
+
+          <md-button aria-label="Hide/Show Layer" ng-if="ctrl.svgArtistDemo.selectedLayer">
+            <md-icon md-svg-icon="images/icons/eye.svg"></md-icon>
+          </md-button>
+
+          <md-button aria-label="Remove Layer" ng-if="ctrl.svgArtistDemo.selectedLayer" ng-click="ctrl.svgArtistDemo.removeLayer()">
+            <ng-md-icon icon="delete" style="fill: black" size="18"></ng-md-icon>
+          </md-button>
+        </md-content>
+      </md-sidenav>
+      <md-content flex layout-padding>
+        <div layout="column svg-container" layout-fill layout-align="top center"
+             ng-class="{'use-cross-hairs': ctrl.svgArtistDemo.createLineActive, 'use-grab': ctrl.svgArtistDemo.selectItemActive}">
+          <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"
+               class="svg-artist-demo"
+               style="width:1200px;height:900px;border: 1px solid black;">
+          </svg>
+        </div>
+        <div flex></div>
+      </md-content>
+      <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
+        <md-toolbar class="md-theme-light">
+          <h1 class="md-toolbar-tools">Sidenav Right</h1>
+        </md-toolbar>
+        <md-content layout-padding>
+          <form>
+            <md-input-container>
+              <label for="testInput">Test input</label>
+              <input type="text" id="testInput"
+                     ng-model="data" md-autofocus>
+            </md-input-container>
+          </form>
+          <md-button ng-click="ctrl.close('right')" class="md-primary">
+            Close Sidenav Right
+          </md-button>
+        </md-content>
+      </md-sidenav>
+    </section>
   </div>
 </div>
