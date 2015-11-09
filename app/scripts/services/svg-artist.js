@@ -112,17 +112,7 @@ angular.module('svgArtistApp')
 
       this.createLineActive = true;
 
-      if(!this.selectedLayer) {
-        if(this.Layers.length === 0) {
-          this.Layers.push({
-            name: 'Layer 0',
-            specialItems: [],
-            layer: this.svgArtist.append('g').attr('name', 'Layer 0').attr('class', 'layer'),
-            items: []
-          });
-        }
-        this.selectedLayer =  this.Layers[0];
-      }
+      this.addLayerIfNone();
 
       var svg = this.svgContainer;
 
@@ -142,6 +132,20 @@ angular.module('svgArtistApp')
           svg.on("mouseup", null);
           $rootScope.$apply();
         });
+    };
+
+    SvgArtist.prototype.addLayerIfNone = function () {
+      if(!this.selectedLayer) {
+        if(this.Layers.length === 0) {
+          this.Layers.push({
+            name: 'Layer 0',
+            specialItems: [],
+            layer: this.svgArtist.append('g').attr('name', 'Layer 0').attr('class', 'layer'),
+            items: []
+          });
+        }
+        this.selectedLayer =  this.Layers[0];
+      }
     };
 
 
@@ -277,21 +281,49 @@ angular.module('svgArtistApp')
 
       var svg = this.svgContainer;
 
+      this.addLayerIfNone();
+
+      var tempText = "";
+
+      window.addEventListener('keydown', function (e) {
+        if (e.keyIdentifier === 'U+0008' || e.keyIdentifier === 'Backspace' || e.keyCode === '8' || document.activeElement !== 'text') {
+          if (e.target === document.body) {
+            e.preventDefault();
+          }
+        }
+      }, true);
+
       svg
         .on("mousedown", function () {
 
           var m = d3.mouse(svg.node());
 
-          d3.select('body').on("keyup", function(d) {
-            console.log("keypress", d3.event.keyCode, m, String.fromCharCode(d3.event.keyCode)); // also tried "keyup", "keydown", "key"
+          var textItem = _this.selectedLayer.layer.append('text')
+            .attr("x", m[0])
+            .attr("y", m[1])
+            .attr("font-family", "sans-serif")
+            .attr("font-size", "20px");
 
-            //var popupText = _this.selectedLayer
+          _this.selectedLayer.items.unshift(textItem);
 
-            //_this.selectedLayer.specialItems.unshift();
+          d3.select('body').on("keyup", function() {
+            console.log(d3.event.keyCode, String.fromCharCode(d3.event.keyCode));
 
             if(d3.event.keyCode === 13 || d3.event.keyCode === 27) {
               d3.select('body').on("keyup", null);
+              return false;
             }
+
+            if(d3.event.keyCode === 8) {
+              tempText = tempText.substring(0, tempText.length - 1);
+              textItem.text(tempText);
+              return true;
+            }
+
+            tempText = tempText + '' + String.fromCharCode(d3.event.keyCode);
+
+            textItem.text(tempText);
+
           });
         })
         .on("mouseup", function () {
