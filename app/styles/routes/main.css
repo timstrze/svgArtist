@@ -11,6 +11,11 @@
   cursor: crosshair;
 }
 
+
+.main .use-text {
+  cursor: text;
+}
+
 .main .svg-container {
   /*border: 1px solid black;*/
 }

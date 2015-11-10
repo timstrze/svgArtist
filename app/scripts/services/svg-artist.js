@@ -88,7 +88,7 @@ angular.module('svgArtistApp')
         name: 'Layer ' + this.Layers.length,
         specialItems: [],
         layer: this.svgArtist.append('g').attr('name', 'Layer ' + this.Layers.length).attr('class', 'layer'),
-        items: []
+        svgItems: []
       });
 
       this.selectedLayer =  this.Layers[0];
@@ -116,9 +116,10 @@ angular.module('svgArtistApp')
 
       var svg = this.svgContainer;
 
-      var line = this.selectedLayer.layer.append("line");
+      var line = this.selectedLayer.layer.append("line").attr("name", "line")
+        ;
 
-      this.selectedLayer.items.unshift(line);
+      this.selectedLayer.svgItems.unshift(line);
 
       svg
         .on("mousedown", function () {
@@ -141,7 +142,7 @@ angular.module('svgArtistApp')
             name: 'Layer 0',
             specialItems: [],
             layer: this.svgArtist.append('g').attr('name', 'Layer 0').attr('class', 'layer'),
-            items: []
+            svgItems: []
           });
         }
         this.selectedLayer =  this.Layers[0];
@@ -211,6 +212,12 @@ angular.module('svgArtistApp')
     };
 
 
+
+    SvgArtist.prototype.returnSvgItemName = function(svgItem) {
+      return svgItem[0][0].nodeName;
+    };
+
+
     /**
      * @ngdoc property
      * @name undoAction
@@ -223,7 +230,7 @@ angular.module('svgArtistApp')
 
       this.selectedLayer = selectedLayer;
 
-      angular.forEach(selectedLayer.items, function(item) {
+      angular.forEach(selectedLayer.svgItems, function(item) {
 
         var bbox = item.node().getBBox();
 
@@ -242,6 +249,34 @@ angular.module('svgArtistApp')
         selectedLayer.specialItems.unshift(rect);
 
       });
+
+    };
+
+    /**
+     * @ngdoc property
+     * @name undoAction
+     * @propertyOf stockTrackAngularJsApp.service:SvgArtist
+     *
+     * @description
+     * Make service method available to the ng-repeat.
+     */
+    SvgArtist.prototype.selectSvgItem = function(selectedItem, selectedLayer) {
+
+      var bbox = selectedItem.node().getBBox();
+
+      var rect = selectedLayer.layer.append("svg:rect")
+        .attr("x", bbox.x)
+        .attr("y", bbox.y)
+        .attr("width", bbox.width)
+        .attr("height", bbox.height)
+        .attr("name", "bounding-box")
+        .attr("class", "bounding-box")
+        .style("fill", "#ccc")
+        .style("fill-opacity", ".3")
+        .style("stroke", "#666")
+        .style("stroke-width", "1.5px");
+
+      selectedLayer.specialItems.unshift(rect);
 
     };
 
@@ -279,13 +314,15 @@ angular.module('svgArtistApp')
 
       var _this = this;
 
+      _this.createTextActive = true;
+
       var svg = this.svgContainer;
 
       this.addLayerIfNone();
 
       var tempText = "";
 
-      window.addEventListener('keydown', function (e) {
+      var deleteKeyDown = window.addEventListener('keydown', function (e) {
         if (e.keyIdentifier === 'U+0008' || e.keyIdentifier === 'Backspace' || e.keyCode === '8' || document.activeElement !== 'text') {
           if (e.target === document.body) {
             e.preventDefault();
@@ -298,38 +335,63 @@ angular.module('svgArtistApp')
 
           var m = d3.mouse(svg.node());
 
+          var textBoundingBox = _this.selectedLayer.layer.append('rect')
+            .attr("x", m[0])
+            .attr("y", m[1] - 20 + 3)
+            .attr("width", 3)
+            .attr("height", 20)
+            .attr("name", "bounding-box")
+            .attr("class", "bounding-box")
+            .style("fill", "#ccc")
+            .style("fill-opacity", ".3")
+            .style("stroke", "#666")
+            .style("stroke-width", "1.5px");
+
+          _this.selectedLayer.specialItems.unshift(textBoundingBox);
+
           var textItem = _this.selectedLayer.layer.append('text')
             .attr("x", m[0])
             .attr("y", m[1])
+            .attr("name", "text")
             .attr("font-family", "sans-serif")
             .attr("font-size", "20px");
 
-          _this.selectedLayer.items.unshift(textItem);
+          _this.selectedLayer.svgItems.unshift(textItem);
 
           d3.select('body').on("keyup", function() {
             console.log(d3.event.keyCode, String.fromCharCode(d3.event.keyCode));
 
+            // Esc and Enter stop the text entry
             if(d3.event.keyCode === 13 || d3.event.keyCode === 27) {
               d3.select('body').on("keyup", null);
+              _this.createTextActive = false;
+              textBoundingBox.remove();
+              $rootScope.$apply();
               return false;
             }
 
             if(d3.event.keyCode === 8) {
               tempText = tempText.substring(0, tempText.length - 1);
-              textItem.text(tempText);
-              return true;
+            }else{
+              tempText = tempText + '' + String.fromCharCode(d3.event.keyCode);
             }
 
-            tempText = tempText + '' + String.fromCharCode(d3.event.keyCode);
-
             textItem.text(tempText);
+
+            // Get the bounding box
+            var bbox = textItem.node().getBBox();
+
+            textBoundingBox
+              .attr("x", bbox.x)
+              .attr("y", bbox.y)
+              .attr("width", bbox.width)
+              .attr("height", bbox.height)
 
           });
         })
         .on("mouseup", function () {
           svg.on('mousedown', null);
           svg.on('mouseup', null);
-          //d3.select('body').on("keyup", null);
         });
 
 
@@ -380,7 +442,10 @@ angular.module('svgArtistApp')
      */
     SvgArtist.prototype.removeAllLayers = function() {
       angular.forEach(this.Layers, function(layer) {
-        angular.forEach(layer.items, function(item) {
+        angular.forEach(layer.svgItems, function(item) {
+          item.remove();
+        });
+        angular.forEach(layer.specialItems, function(item) {
           item.remove();
         });
       });
@@ -400,7 +465,10 @@ angular.module('svgArtistApp')
      * Make service method available to the ng-repeat.
      */
     SvgArtist.prototype.removeLayer = function() {
-      angular.forEach(this.selectedLayer.items, function(item) {
+      angular.forEach(this.selectedLayer.svgItems, function(item) {
+        item.remove();
+      });
+      angular.forEach(this.selectedLayer.specialItems, function(item) {
         item.remove();
       });
       this.Layers.splice(this.Layers.indexOf(this.selectedLayer), 1);
