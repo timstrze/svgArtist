@@ -19,15 +19,7 @@ angular
     'ngMaterial',
     'ngMessages',
     'ngMdIcons'
-  ])
-  .config(function ($routeProvider) {
-    $routeProvider
-      .when('/', {
-        templateUrl: 'views/routes/main.html',
-        controller: 'MainController',
-        controllerAs: 'ctrl'
-      });
-  });
+  ]);
 
 
 
