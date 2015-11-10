@@ -19,7 +19,15 @@ angular
     'ngMaterial',
     'ngMessages',
     'ngMdIcons'
-  ]);
+  ])
+  .config(function ($routeProvider) {
+    $routeProvider
+      .when('/svg-artist/demo', {
+        templateUrl: 'views/routes/main.html',
+        controller: 'MainController',
+        controllerAs: 'ctrl'
+      });
+  });
 
 
 
