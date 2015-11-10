@@ -26,9 +26,6 @@ angular
         templateUrl: 'views/routes/main.html',
         controller: 'MainController',
         controllerAs: 'ctrl'
-      })
-      .otherwise({
-        redirectTo: '/'
       });
   });
 
