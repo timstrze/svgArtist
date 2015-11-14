@@ -19,7 +19,8 @@ angular.module('svgArtistApp')
         templateUrl: 'views/directives/svg-artist-tools.html',
         restrict: 'E',
         scope: {
-          settings: '='
+          settings: '=',
+          svgInstance: '='
         }
       };
     });

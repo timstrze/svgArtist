@@ -1,4 +1,4 @@
-<md-button ng-if="settings.showSelector" aria-label="Select" ng-class="{'md-raised':ctrl.svgArtistDemo.selectItemActive}" ng-click="ctrl.svgArtistDemo.makeSelection()">
+<md-button ng-if="settings.showSelector" aria-label="Select" ng-class="{'md-raised':svgInstance.selectItemActive}" ng-click="svgInstance.makeSelection()">
   <md-icon md-svg-icon="images/icons/arrow-up-left.svg" style="width: 18px; height: 18px;"></md-icon>
 </md-button>
 
@@ -6,15 +6,15 @@
   <md-icon md-svg-icon="images/icons/pen.svg" style="width: 18px; height: 18px;"></md-icon>
 </md-button>
 
-<md-button ng-if="settings.showLine" aria-label="Add Line" ng-class="{'md-raised':ctrl.svgArtistDemo.createLineActive}" ng-click="ctrl.svgArtistDemo.activateCreateLine()">
+<md-button ng-if="settings.showLine" aria-label="Add Line" ng-class="{'md-raised':svgInstance.createLineActive}" ng-click="svgInstance.activateCreateLine()">
   <ng-md-icon icon="create" style="fill: black" size="18"></ng-md-icon>
 </md-button>
 
-<md-button ng-if="settings.showText" aria-label="Add Text" ng-click="ctrl.svgArtistDemo.addText()" ng-class="{'md-raised':ctrl.svgArtistDemo.createTextActive}">
+<md-button ng-if="settings.showText" aria-label="Add Text" ng-click="svgInstance.addText()" ng-class="{'md-raised':svgInstance.createTextActive}">
   <ng-md-icon icon="text_format" style="fill: black" size="18"></ng-md-icon>
 </md-button>
 
-<md-button ng-if="settings.showSave" aria-label="Save" ng-click="ctrl.svgArtistDemo.saveImageToDesktop()">
+<md-button ng-if="settings.showSave" aria-label="Save" ng-click="svgInstance.saveImageToDesktop()">
   <ng-md-icon icon="save" style="fill: black" size="18"></ng-md-icon>
 </md-button>
 
