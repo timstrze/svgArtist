@@ -21,8 +21,8 @@ angular
   .config(function ($routeProvider) {
     $routeProvider
       .when('/svg-artist/demo', {
-        templateUrl: 'views/routes/main.html',
-        controller: 'MainController',
+        templateUrl: 'views/demo/svg-artist.html',
+        controller: 'DemoController',
         controllerAs: 'ctrl'
       });
   });
