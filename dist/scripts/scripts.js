@@ -72,15 +72,17 @@ angular.module('svgArtistApp')
         });
     };
 
+    this.settings = {showLine: true, showText: true, showSave: true};
+
     this.svgArtistDemo = new SvgArtist({target: '.svg-artist-demo'});
 
 
-    this.settings = {
-      printLayout: true,
-      showRuler: true,
-      showSpellingSuggestions: true,
-      presentationMode: 'edit'
-    };
+    //this.settings = {
+    //  printLayout: true,
+    //  showRuler: true,
+    //  showSpellingSuggestions: true,
+    //  presentationMode: 'edit'
+    //};
 
     this.sampleAction = function(name, ev) {
       $mdDialog.show($mdDialog.alert()
@@ -180,6 +182,60 @@ angular.module('svgArtistApp')
 'use strict';
 
 /**
+ * @ngdoc directive
+ * @name svgArtistApp.directive:svg-artist-tools
+ * @element svg-artist-layer-panel
+ * @restrict E
+ *
+ * @description
+ * # svgArtistTools
+ * Directive
+ *
+ * @param {Array} data Array of Data
+ */
+
+angular.module('svgArtistApp')
+    .directive('svgArtistTools', function () {
+      return {
+        templateUrl: 'views/directives/svg-artist-tools.html',
+        restrict: 'E',
+        scope: {
+          settings: '='
+        }
+      };
+    });
+
+'use strict';
+
+/**
+ * @ngdoc directive
+ * @name svgArtistApp.directive:svg-artist-layer-panel
+ * @element svg-artist-tools
+ * @restrict E
+ *
+ * @description
+ * # svgArtistTools
+ * Directive
+ *
+ * @param {Array} data Array of Data
+ */
+
+angular.module('svgArtistApp')
+    .directive('svgArtistLayerPanel', function () {
+      return {
+        templateUrl: 'views/directives/svg-artist-layer-panel.html',
+        restrict: 'E',
+        link: function postLink($scope, $element) {
+
+
+
+        }
+      };
+    });
+
+'use strict';
+
+/**
  * @ngdoc service
  * @name svgArtistApp.service:Layers
  * @description
@@ -251,7 +307,6 @@ angular.module('svgArtistApp')
 
       this.svgContainer = d3.select(this.target);
       this.svgArtist = this.svgContainer.append('g').attr('name', 'svgArtist').attr('class', 'svg-artist');
-
 
       this.Layers = [];
     };
