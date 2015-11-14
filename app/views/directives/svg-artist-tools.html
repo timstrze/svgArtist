@@ -1,0 +1,21 @@
+<md-button ng-if="settings.showSelector" aria-label="Select" ng-class="{'md-raised':ctrl.svgArtistDemo.selectItemActive}" ng-click="ctrl.svgArtistDemo.makeSelection()">
+  <md-icon md-svg-icon="images/icons/arrow-up-left.svg" style="width: 18px; height: 18px;"></md-icon>
+</md-button>
+
+<md-button ng-if="settings.showPen" aria-label="Pen">
+  <md-icon md-svg-icon="images/icons/pen.svg" style="width: 18px; height: 18px;"></md-icon>
+</md-button>
+
+<md-button ng-if="settings.showLine" aria-label="Add Line" ng-class="{'md-raised':ctrl.svgArtistDemo.createLineActive}" ng-click="ctrl.svgArtistDemo.activateCreateLine()">
+  <ng-md-icon icon="create" style="fill: black" size="18"></ng-md-icon>
+</md-button>
+
+<md-button ng-if="settings.showText" aria-label="Add Text" ng-click="ctrl.svgArtistDemo.addText()" ng-class="{'md-raised':ctrl.svgArtistDemo.createTextActive}">
+  <ng-md-icon icon="text_format" style="fill: black" size="18"></ng-md-icon>
+</md-button>
+
+<md-button ng-if="settings.showSave" aria-label="Save" ng-click="ctrl.svgArtistDemo.saveImageToDesktop()">
+  <ng-md-icon icon="save" style="fill: black" size="18"></ng-md-icon>
+</md-button>
+
+

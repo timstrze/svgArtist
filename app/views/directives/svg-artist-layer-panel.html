@@ -1,0 +1,48 @@
+<!--<md-menu md-offset="0 -7">-->
+  <!--<md-button ng-disabled="!ctrl.svgArtistDemo.Layers.length" aria-label="Open demo menu" ng-click="$mdOpenMenu($event)">-->
+    <!--<ng-md-icon md-menu-origin icon="layers" style="fill: black" size="18"></ng-md-icon>{{ctrl.svgArtistDemo.Layers.length}}-->
+  <!--</md-button>-->
+  <!--<md-menu-content width="4">-->
+    <!--<md-menu-item ng-repeat="layer in ctrl.svgArtistDemo.Layers">-->
+      <!--<md-button aria-label="Select Layer" ng-click="ctrl.svgArtistDemo.selectItemsInLayer(layer)">-->
+        <!--<div layout="row">-->
+          <!--<p flex>{{layer.name}}</p>-->
+        <!--</div>-->
+      <!--</md-button>-->
+    <!--</md-menu-item>-->
+  <!--</md-menu-content>-->
+<!--</md-menu>-->
+
+<div ng-repeat="layer in ctrl.svgArtistDemo.Layers">
+  <md-button aria-label="Select Layer" ng-click="ctrl.svgArtistDemo.selectItemsInLayer(layer)">
+    <div layout="row">
+      <p flex>{{layer.name}}</p>
+    </div>
+  </md-button>
+</div>
+
+<md-button aria-label="New Layer" ng-click="ctrl.svgArtistDemo.createNewLayer()">
+  <ng-md-icon icon="content_copy" style="fill: black" size="18"></ng-md-icon>
+</md-button>
+
+<md-button aria-label="Clear" ng-click="ctrl.svgArtistDemo.removeAllLayers()">
+  <ng-md-icon icon="layers_clear" style="fill: black" size="18"></ng-md-icon>
+</md-button>
+
+
+
+
+<md-input-container>
+  <input aria-label="Selected Layer" ng-if="ctrl.svgArtistDemo.selectedLayer" ng-model="ctrl.svgArtistDemo.selectedLayer.name">
+  <div layout="row" ng-repeat="svgItem in ctrl.svgArtistDemo.selectedLayer.svgItems" ng-click="ctrl.svgArtistDemo.selectSvgItem(svgItem, ctrl.svgArtistDemo.selectedLayer)">
+    <p flex>{{ctrl.svgArtistDemo.returnSvgItemName(svgItem)}}</p>
+  </div>
+</md-input-container>
+
+<md-button aria-label="Hide/Show Layer" ng-if="ctrl.svgArtistDemo.selectedLayer">
+  <md-icon md-svg-icon="images/icons/eye.svg"></md-icon>
+</md-button>
+
+<md-button aria-label="Remove Layer" ng-if="ctrl.svgArtistDemo.selectedLayer" ng-click="ctrl.svgArtistDemo.removeLayer()">
+  <ng-md-icon icon="delete" style="fill: black" size="18"></ng-md-icon>
+</md-button>

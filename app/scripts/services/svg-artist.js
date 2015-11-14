@@ -23,7 +23,6 @@ angular.module('svgArtistApp')
       this.svgContainer = d3.select(this.target);
       this.svgArtist = this.svgContainer.append('g').attr('name', 'svgArtist').attr('class', 'svg-artist');
 
-
       this.Layers = [];
     };
 

@@ -38,15 +38,17 @@ angular.module('svgArtistApp')
         });
     };
 
+    this.settings = {showLine: true, showText: true, showSave: true};
+
     this.svgArtistDemo = new SvgArtist({target: '.svg-artist-demo'});
 
 
-    this.settings = {
-      printLayout: true,
-      showRuler: true,
-      showSpellingSuggestions: true,
-      presentationMode: 'edit'
-    };
+    //this.settings = {
+    //  printLayout: true,
+    //  showRuler: true,
+    //  showSpellingSuggestions: true,
+    //  presentationMode: 'edit'
+    //};
 
     this.sampleAction = function(name, ev) {
       $mdDialog.show($mdDialog.alert()
