@@ -96,6 +96,143 @@ angular.module('svgArtistApp')
 
 
 
+    /**
+     * @ngdoc function
+     * @name addLayerIfNone
+     * @methodOf stockTrackAngularJsApp.service:SvgArtist
+     *
+     * @description
+     * Create layer if none exists.
+     */
+    SvgArtist.prototype.addLayerIfNone = function () {
+      if(!this.selectedLayer) {
+        if(this.Layers.length === 0) {
+          this.Layers.push({
+            name: 'Layer 0',
+            specialItems: [],
+            layer: this.svgArtist.append('g').attr('name', 'Layer 0').attr('class', 'layer'),
+            svgItems: []
+          });
+        }
+        this.selectedLayer =  this.Layers[0];
+      }
+    };
+
+
+
+    /**
+     * @ngdoc property
+     * @name undoAction
+     * @propertyOf stockTrackAngularJsApp.service:SvgArtist
+     *
+     * @description
+     * Make service method available to the ng-repeat.
+     */
+    SvgArtist.prototype.selectLayer = function(layer) {
+      this.selectedLayer = layer;
+    };
+
+
+    /**
+     * @ngdoc property
+     * @name undoAction
+     * @propertyOf stockTrackAngularJsApp.service:SvgArtist
+     *
+     * @description
+     * Make service method available to the ng-repeat.
+     */
+    SvgArtist.prototype.selectItemsInLayer = function(selectedLayer) {
+
+      this.selectedLayer = selectedLayer;
+
+      angular.forEach(selectedLayer.svgItems, function(item) {
+
+        var bbox = item.node().getBBox();
+
+        var rect = selectedLayer.layer.append("svg:rect")
+          .attr("x", bbox.x)
+          .attr("y", bbox.y)
+          .attr("width", bbox.width)
+          .attr("height", bbox.height)
+          .attr("name", "bounding-box")
+          .attr("class", "bounding-box")
+          .style("fill", "#ccc")
+          .style("fill-opacity", ".3")
+          .style("stroke", "#666")
+          .style("stroke-width", "1.5px");
+
+        selectedLayer.specialItems.unshift(rect);
+
+      });
+
+    };
+
+
+    /**
+     * @ngdoc property
+     * @name undoAction
+     * @propertyOf stockTrackAngularJsApp.service:SvgArtist
+     *
+     * @description
+     * Make service method available to the ng-repeat.
+     */
+    SvgArtist.prototype.deSelectItemsInLayer = function(layer) {
+
+      this.selectedLayer = layer;
+
+      //angular.forEach(layer.specialItems, function(specialItem) {
+      //
+      //  layer.specialItems.unshift(rect);
+      //
+      //});
+
+    };
+
+
+    /**
+     * @ngdoc property
+     * @name clearAll
+     * @propertyOf stockTrackAngularJsApp.service:SvgArtist
+     *
+     * @description
+     * Make service method available to the ng-repeat.
+     */
+    SvgArtist.prototype.removeAllLayers = function() {
+      angular.forEach(this.Layers, function(layer) {
+        angular.forEach(layer.svgItems, function(item) {
+          item.remove();
+        });
+        angular.forEach(layer.specialItems, function(item) {
+          item.remove();
+        });
+      });
+
+      this.Layers = [];
+
+      this.selectedLayer = null;
+    };
+
+
+    /**
+     * @ngdoc property
+     * @name removeLayer
+     * @propertyOf stockTrackAngularJsApp.service:SvgArtist
+     *
+     * @description
+     * Make service method available to the ng-repeat.
+     */
+    SvgArtist.prototype.removeLayer = function() {
+      angular.forEach(this.selectedLayer.svgItems, function(item) {
+        item.remove();
+      });
+      angular.forEach(this.selectedLayer.specialItems, function(item) {
+        item.remove();
+      });
+      this.Layers.splice(this.Layers.indexOf(this.selectedLayer), 1);
+
+      this.selectedLayer = this.Layers[0];
+    };
+
 
     /**
      * @ngdoc function
@@ -115,8 +252,7 @@ angular.module('svgArtistApp')
 
       var svg = this.svgContainer;
 
-      var line = this.selectedLayer.layer.append("line").attr("name", "line")
-        ;
+      var line = this.selectedLayer.layer.append("line").attr("name", "line");
 
       this.selectedLayer.svgItems.unshift(line);
 
@@ -134,19 +270,6 @@ angular.module('svgArtistApp')
         });
     };
 
-    SvgArtist.prototype.addLayerIfNone = function () {
-      if(!this.selectedLayer) {
-        if(this.Layers.length === 0) {
-          this.Layers.push({
-            name: 'Layer 0',
-            specialItems: [],
-            layer: this.svgArtist.append('g').attr('name', 'Layer 0').attr('class', 'layer'),
-            svgItems: []
-          });
-        }
-        this.selectedLayer =  this.Layers[0];
-      }
-    };
 
 
     /**
@@ -197,58 +320,8 @@ angular.module('svgArtistApp')
     };
 
 
-
-    /**
-     * @ngdoc property
-     * @name undoAction
-     * @propertyOf stockTrackAngularJsApp.service:SvgArtist
-     *
-     * @description
-     * Make service method available to the ng-repeat.
-     */
-    SvgArtist.prototype.selectLayer = function(layer) {
-      this.selectedLayer = layer;
-    };
-
-
-
     SvgArtist.prototype.returnSvgItemName = function(svgItem) {
       return svgItem[0][0].nodeName;
-    };
-
-
-    /**
-     * @ngdoc property
-     * @name undoAction
-     * @propertyOf stockTrackAngularJsApp.service:SvgArtist
-     *
-     * @description
-     * Make service method available to the ng-repeat.
-     */
-    SvgArtist.prototype.selectItemsInLayer = function(selectedLayer) {
-
-      this.selectedLayer = selectedLayer;
-
-      angular.forEach(selectedLayer.svgItems, function(item) {
-
-        var bbox = item.node().getBBox();
-
-        var rect = selectedLayer.layer.append("svg:rect")
-          .attr("x", bbox.x)
-          .attr("y", bbox.y)
-          .attr("width", bbox.width)
-          .attr("height", bbox.height)
-          .attr("name", "bounding-box")
-          .attr("class", "bounding-box")
-          .style("fill", "#ccc")
-          .style("fill-opacity", ".3")
-          .style("stroke", "#666")
-          .style("stroke-width", "1.5px");
-
-        selectedLayer.specialItems.unshift(rect);
-
-      });
-
     };
 
     /**
@@ -279,26 +352,6 @@ angular.module('svgArtistApp')
 
     };
 
-
-    /**
-     * @ngdoc property
-     * @name undoAction
-     * @propertyOf stockTrackAngularJsApp.service:SvgArtist
-     *
-     * @description
-     * Make service method available to the ng-repeat.
-     */
-    SvgArtist.prototype.deSelectItemsInLayer = function(layer) {
-
-      this.selectedLayer = layer;
-
-      //angular.forEach(layer.specialItems, function(specialItem) {
-      //
-      //  layer.specialItems.unshift(rect);
-      //
-      //});
-
-    };
 
 
     /**
@@ -430,50 +483,6 @@ angular.module('svgArtistApp')
       this.selectItemActive = !this.selectItemActive;
     };
 
-
-    /**
-     * @ngdoc property
-     * @name clearAll
-     * @propertyOf stockTrackAngularJsApp.service:SvgArtist
-     *
-     * @description
-     * Make service method available to the ng-repeat.
-     */
-    SvgArtist.prototype.removeAllLayers = function() {
-      angular.forEach(this.Layers, function(layer) {
-        angular.forEach(layer.svgItems, function(item) {
-          item.remove();
-        });
-        angular.forEach(layer.specialItems, function(item) {
-          item.remove();
-        });
-      });
-
-      this.Layers = [];
-
-      this.selectedLayer = null;
-    };
-
-
-    /**
-     * @ngdoc property
-     * @name removeLayer
-     * @propertyOf stockTrackAngularJsApp.service:SvgArtist
-     *
-     * @description
-     * Make service method available to the ng-repeat.
-     */
-    SvgArtist.prototype.removeLayer = function() {
-      angular.forEach(this.selectedLayer.svgItems, function(item) {
-        item.remove();
-      });
-      angular.forEach(this.selectedLayer.specialItems, function(item) {
-        item.remove();
-      });
-      this.Layers.splice(this.Layers.indexOf(this.selectedLayer), 1);
-
-      this.selectedLayer = this.Layers[0];
-    };
 
 
     return SvgArtist;
